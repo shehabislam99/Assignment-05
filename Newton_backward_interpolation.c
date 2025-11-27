@@ -1,11 +1,14 @@
 #include <stdio.h>
+#include <math.h>
+#define MAX 100
 
-double newtonBackwardInterpolation(double x[], double y[][10], int n, double xp)
+void Newton_BackwardInterpolation(double x[MAX], double y[MAX][MAX], int n, double find_value)
 {
-     double h = x[1] - x[0];
-     double u = (xp - x[n - 1]) / h;
-     double result = y[n - 1][0];
-     double term = u;
+     double h, p, xi, Li;
+     h = x[1] - x[0];
+     p = (find_value - x[n - 1]) / h;
+     xi = y[n - 1][0];
+     Li = 1.0;
 
      for (int i = 1; i < n; i++)
      {
@@ -13,40 +16,33 @@ double newtonBackwardInterpolation(double x[], double y[][10], int n, double xp)
           {
                y[j][i] = y[j][i - 1] - y[j - 1][i - 1];
           }
-     }
+      }
 
-   
-     double factorial = 1.0;
      for (int i = 1; i < n; i++)
      {
-          factorial *= i;
-          result += (term * y[n - 1][i]) / factorial;
-          term *= (u + i);
+          Li = Li * (p + (i - 1)) / i;
+          xi = xi + Li * y[n - 1][i];
+         
      }
 
-     return result;
+     printf("Newton Backward interpolation Value at  f(%.2f) = %.3f\n", find_value, xi);
 }
 
 int main()
 {
      int n;
-     printf("Enter number of data points: ");
+     double x[MAX], y[MAX][MAX], find_value;
+     printf("Enter the number of value data: ");
      scanf("%d", &n);
 
-     double x[n], y[n][10];
-
-     printf("Enter data points (x y):\n");
+     printf("Enter value of x and y:\n");
      for (int i = 0; i < n; i++)
-     {
           scanf("%lf %lf", &x[i], &y[i][0]);
-     }
 
-     double xp;
-     printf("Enter interpolation point: ");
-     scanf("%lf", &xp);
+     printf("Enter interpolation value point x: ");
+     scanf("%lf", &find_value);
 
-     double result = newtonBackwardInterpolation(x, y, n, xp);
-     printf("Interpolated value at %.2f = %.6f\n", xp, result);
+     Newton_BackwardInterpolation(x, y, n, find_value);
 
      return 0;
 }

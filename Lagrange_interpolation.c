@@ -2,10 +2,9 @@
 #include <math.h>
 #define MAX 1000
 
-double Lagrange_Interpolation(double x[MAX], double y[MAX], int n, double find_value)
+void Lagrange_Interpolation(double x[MAX], double y[MAX], int n, double find_value)
 {
      double xi = 0.0;
-
      for (int i = 0; i < n; i++)
      {
           double Li = y[i];
@@ -18,13 +17,13 @@ double Lagrange_Interpolation(double x[MAX], double y[MAX], int n, double find_v
           }
           xi += Li;
      }
-     return xi;
+     printf("Lagrange Interpolation value at f(%.2f) = %.3lf\n", find_value, xi);
 }
 
 int main()
 {
      int n;
-     double x[MAX], y[MAX], find_value, xi;
+     double x[MAX], y[MAX], find_value;
 
      printf("Enter the number of value data: ");
      scanf("%d", &n);
@@ -35,11 +34,10 @@ int main()
           scanf("%lf %lf", &x[i], &y[i]);
      }
 
-     printf("Enter the value of x: ");
+     printf("Enter interpolation value point x: ");
      scanf("%lf", &find_value);
 
-     xi = Lagrange_Interpolation(x, y, n, find_value);
-     printf("Lagrange Interpolation value is f(x) = %.6lf\n", xi);
+     Lagrange_Interpolation(x, y, n, find_value);
 
      return 0;
 }
